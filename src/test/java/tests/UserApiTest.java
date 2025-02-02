@@ -1,6 +1,5 @@
 package tests;
 
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import pages.UserApiPage;
@@ -12,33 +11,47 @@ public class UserApiTest {
     private final UserApiPage userApi = new UserApiPage();
 
     @Test
+    public void testGetUsers() {
+        Response response = userApi.getUsers(2);
+
+        // Verify response status code
+        assertEquals(200, response.getStatusCode(), "Status code is incorrect");
+
+        // Print API response
+        System.out.println("Response: " + response.getBody().asPrettyString());
+    }
+
+    @Test
     public void testCreateUser() {
         Response response = userApi.createUser("John Doe", "QA Engineer");
 
-        // Response content logging
+        // Log response body
         System.out.println("Response Body: " + response.getBody().asPrettyString());
 
-        // Checking HTTP status
+        // Verify HTTP status code
         assertEquals(201, response.getStatusCode(), "Status code is incorrect");
 
-        // Verification of data in response
+        // Verify response data correctness
         assertEquals("John Doe", response.jsonPath().getString("name"));
         assertEquals("QA Engineer", response.jsonPath().getString("job"));
 
-        // Verify that the API returns the ID and timestamp
+        // Check if API returns ID and timestamp
         assertNotNull(response.jsonPath().getString("id"));
         assertNotNull(response.jsonPath().getString("createdAt"));
     }
 
-
     @Test
-    public void testGetUsers() {
-        Response response = RestAssured.get("https://regres.in/api/users?page=2");
+    public void testUpdateUser() {
+        Response response = userApi.updateUser(2, "Jane Doe", "Senior QA Engineer");
 
-        // Checking the status of your response
+        // Verify response status code
         assertEquals(200, response.getStatusCode(), "Status code is incorrect");
 
-        // Writing out the answers
-        System.out.println("Response: " + response.getBody().asPrettyString());
+        // Verify response data correctness
+        assertEquals("Jane Doe", response.jsonPath().getString("name"));
+        assertEquals("Senior QA Engineer", response.jsonPath().getString("job"));
+
+        // Check if API returns `updatedAt` timestamp
+        assertNotNull(response.jsonPath().getString("updatedAt"));
     }
 }

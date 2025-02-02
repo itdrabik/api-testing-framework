@@ -8,9 +8,14 @@ import java.util.Map;
 public class UserApiPage {
     private static final String BASE_URL = "https://reqres.in/api";
 
-    public Response getUser(int page) {
+    public Response getUsers(int page) {
         return RestAssured.given()
-                .get(BASE_URL + "/user?page" + page);
+                .log().uri()
+                .get(BASE_URL + "/users?page=" + page)
+                .then()
+                .log().status()
+                .log().body()
+                .extract().response();
     }
 
     public Response createUser(String name, String job) {
@@ -22,14 +27,30 @@ public class UserApiPage {
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
                 .body(requestBody)
-                .log().uri()    // URI logging
-                .log().body()   // Logging the request body
+                .log().uri()
+                .log().body()
                 .post(BASE_URL + "/users")
                 .then()
-                .log().status() // Response status logging
-                .log().body()   // Response logging
+                .log().status()
+                .log().body()
                 .extract().response();
     }
 
+    public Response updateUser(int userId, String name, String job) {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("name", name);
+        requestBody.put("job", job);
 
+        return RestAssured.given()
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .body(requestBody)
+                .log().uri()
+                .log().body()
+                .put(BASE_URL + "/users/" + userId)
+                .then()
+                .log().status()
+                .log().body()
+                .extract().response();
+    }
 }
