@@ -11,7 +11,10 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
 
     <dependencies>
         <!-- JUnit 5 for testing -->
@@ -33,7 +36,16 @@
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.0</version>
+        </dependency>
+
     </dependencies>
+
+
 
     <build>
         <plugins>
