@@ -53,4 +53,13 @@ public class UserApiPage {
                 .log().body()
                 .extract().response();
     }
+
+    public Response deleteUser(int userId) {
+        return RestAssured.given()
+                .log().uri()
+                .delete(BASE_URL + "/users" + userId)
+                .then()
+                .log().status()
+                .extract().response();
+    }
 }

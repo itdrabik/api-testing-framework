@@ -54,4 +54,12 @@ public class UserApiTest {
         // Check if API returns `updatedAt` timestamp
         assertNotNull(response.jsonPath().getString("updatedAt"));
     }
+
+    @Test
+    public void testDeleteUser() {
+        Response response = userApi.deleteUser(2);
+
+        //Verify response status code
+        assertEquals("", response.getBody().asString(), "Response body should be empty");
+    }
 }
